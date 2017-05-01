@@ -1,0 +1,36 @@
+server:
+  port: 8080
+
+spring:
+  rabbitmq:
+   addresses: localhost:5672
+   username: guest
+   password: guest
+   virtual_host: /
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: scrape-requests
+          binder: rabbit
+        output:
+          destination: site-data
+          group: scraper
+          contentType: application/json
+          binder: kafka
+
+rabbit:
+  queues: scrape-requests
+
+management:
+  security:
+    enabled: false
+  health:
+    binders:
+      enabled: true
+
+logging:
+  level:
+    org.springframework.integration: DEBUG
+    org.springframework.kafka: DEBUG
+    org.apache.kafka: DEBUG

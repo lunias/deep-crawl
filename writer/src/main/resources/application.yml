@@ -1,0 +1,32 @@
+server:
+  port: 8083
+
+spring:
+  rabbitmq:
+   addresses: localhost:5672
+   username: guest
+   password: guest
+   virtual_host: /
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: site-data-processed
+          binder: kafka
+
+rabbit:
+  exchange: scrape-requests
+  routing-key: writer-key
+
+management:
+  security:
+    enabled: false
+  health:
+    binders:
+      enabled: true
+
+logging:
+  level:
+    org.springframework.integration: DEBUG
+    org.springframework.data: DEBUG
+    com.amazonaws: DEBUG

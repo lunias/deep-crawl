@@ -1,0 +1,34 @@
+server:
+  port: 8081
+
+spring:
+  cloud:
+    stream:
+      kafka:
+        bindings:
+          input:
+            consumer:
+              resetOffsets: true
+              startOffset: latest
+      bindings:
+        input:
+          destination: site-data
+          binder: kafka
+        output:
+          destination: site-data-processed
+          group: writer
+          contentType: application/json
+          binder: kafka
+
+management:
+  security:
+    enabled: false
+  health:
+    binders:
+      enabled: true
+
+logging:
+  level:
+    org.springframework.integration: DEBUG
+    org.springframework.kafka: DEBUG
+    org.apache.kafka: DEBUG
